@@ -68,6 +68,11 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        "ai": "var(--shadow-ai)",
+        "card": "var(--shadow-card)",
+        "lg": "var(--shadow-lg)",
+      },
       keyframes: {
         "accordion-down": {
           from: {
