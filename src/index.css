@@ -2,39 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* AI Project Calculator Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 263 85% 60%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 263 85% 60%;
+
+    /* AI Theme Colors */
+    --ai-primary: 263 85% 60%;
+    --ai-secondary: 271 91% 65%;
+    --ai-accent: 280 100% 70%;
+    --ai-success: 142 76% 36%;
+    --ai-warning: 38 92% 50%;
+    
+    /* Gradients */
+    --gradient-ai: linear-gradient(135deg, hsl(var(--ai-primary)), hsl(var(--ai-secondary)));
+    --gradient-card: linear-gradient(135deg, hsl(240 3.7% 15.9% / 0.8), hsl(240 3.7% 15.9% / 0.4));
+    --gradient-hover: linear-gradient(135deg, hsl(var(--ai-primary) / 0.8), hsl(var(--ai-secondary) / 0.8));
+    
+    /* Shadows */
+    --shadow-ai: 0 10px 25px -3px hsl(var(--ai-primary) / 0.3);
+    --shadow-card: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -2px hsl(0 0% 0% / 0.05);
 
     --radius: 0.5rem;
 
@@ -101,5 +116,33 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background-image: radial-gradient(circle at 20% 80%, hsl(var(--ai-primary) / 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, hsl(var(--ai-secondary) / 0.15) 0%, transparent 50%);
+  }
+}
+
+@layer components {
+  .ai-card {
+    @apply bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg shadow-card transition-all duration-300;
+  }
+  
+  .ai-card-selected {
+    @apply ai-card border-primary/50 shadow-ai;
+  }
+  
+  .ai-card-hover {
+    @apply hover:border-primary/30 hover:shadow-lg hover:scale-[1.02];
+  }
+  
+  .ai-button-primary {
+    @apply bg-gradient-to-r from-ai-primary to-ai-secondary text-primary-foreground hover:from-ai-primary/80 hover:to-ai-secondary/80 shadow-ai;
+  }
+  
+  .ai-step-completed {
+    @apply ai-card cursor-pointer hover:border-primary/40;
+  }
+  
+  .ai-tooltip {
+    @apply bg-popover/95 backdrop-blur text-popover-foreground border border-border/50 rounded-md shadow-lg;
   }
 }

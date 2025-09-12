@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "ai-primary": "hsl(var(--ai-primary))",
+        "ai-secondary": "hsl(var(--ai-secondary))",
+        "ai-accent": "hsl(var(--ai-accent))",
+        "ai-success": "hsl(var(--ai-success))",
+        "ai-warning": "hsl(var(--ai-warning))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
