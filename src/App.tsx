@@ -1,65 +1,56 @@
-// app.tsx - ФИНАЛЬНАЯ ВЕРСИЯ
+// src/App.tsx
 
-// ДОБАВЛЕНО: Импорты для Telegram SDK
 import { useEffect } from 'react';
-import { SDKProvider, useMiniApp, BackButton } from '@telegram-apps/sdk-react';
+import {
+  AppRoot,
+  BackButton,
+  useThemeParams,
+} from '@tma.js/sdk-react';
 
-// Твои существующие импорты
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+// Компонент калькулятора, который сгенерировал Lovable
+// (предполагаем, что его логика находится здесь)
+function Calculator() {
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Калькулятор проектов</h1>
+      <p>Тут будет твой калькулятор...</p>
+      {/* Здесь должна быть вся структура твоего калькулятора */}
+    </div>
+  );
+}
 
-const queryClient = new QueryClient();
-
-// ДОБАВЛЕНО: Компонент для синхронизации темы
+// Компонент для синхронизации темы
 function ThemeSynchronizer() {
-  const { webApp } = useMiniApp();
+  const themeParams = useThemeParams();
 
   useEffect(() => {
-    if (webApp && webApp.themeParams) {
-      document.documentElement.style.setProperty('--bg-color', webApp.themeParams.bg_color || '#ffffff');
-      document.documentElement.style.setProperty('--text-color', webApp.themeParams.text_color || '#000000');
-      document.documentElement.style.setProperty('--hint-color', webApp.themeParams.hint_color || '#999999');
-      document.documentElement.style.setProperty('--link-color', webApp.themeParams.link_color || '#007aff');
-      document.documentElement.style.setProperty('--button-color', webApp.themeParams.button_color || '#007aff');
-      document.documentElement.style.setProperty('--button-text-color', webApp.themeParams.button_text_color || '#ffffff');
-      
-      // Применяем основные цвета к body для лучшей совместимости
-      document.body.style.backgroundColor = webApp.themeParams.bg_color || '#ffffff';
-      document.body.style.color = webApp.themeParams.text_color || '#000000';
-    }
-  }, [webApp]);
+    // Устанавливаем CSS переменные для основных цветов из темы Telegram
+    document.documentElement.style.setProperty('--bg-color', themeParams.backgroundColor || '#ffffff');
+    document.documentElement.style.setProperty('--text-color', themeParams.textColor || '#000000');
+    document.documentElement.style.setProperty('--hint-color', themeParams.hintColor || '#999999');
+    document.documentElement.style.setProperty('--link-color', themeParams.linkColor || '#007aff');
+    document.documentElement.style.setProperty('--button-color', themeParams.buttonColor || '#007aff');
+    document.documentElement.style.setProperty('--button-text-color', themeParams.buttonTextColor || '#ffffff');
+  }, [themeParams]);
 
   return null;
 }
 
-
-const App = () => (
-  // ДОБАВЛЕНО: Оборачиваем всё в SDKProvider для активации SDK
-  <SDKProvider>
-    {/* ДОБАВЛЕНО: Компоненты для темы и кнопки "Назад" */}
-    <ThemeSynchronizer />
-    <BackButton />
-
-    {/* Твой существующий код остается без изменений */}
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Твой калькулятор находится на главной странице, которую рендерит компонент <Index /> */}
-            <Route path="/" element={<Index />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </SDKProvider>
-);
-
-export default App;
+// Основной компонент приложения
+export default function App() {
+  return (
+    // AppRoot - это новый аналог SDKProvider
+    <AppRoot
+      style={{
+        backgroundColor: 'var(--bg-color)',
+        color: 'var(--text-color)',
+      }}
+    >
+      <ThemeSynchronizer />
+      <BackButton />
+      <div className="min-h-screen">
+        <Calculator />
+      </div>
+    </AppRoot>
+  );
+}
