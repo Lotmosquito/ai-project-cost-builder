@@ -2,42 +2,61 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { SDKProvider, useMiniApp, BackButton } from '@telegram-apps/sdk-react';
-import App from './App'; // <--- Вот самая главная строка!
-import './index.css'; // Убедись, что файл со стилями тоже подключен
+import {
+  AppRoot,
+  BackButton,
+  useThemeParams,
+} from '@tma.js/sdk-react';
+import './index.css';
 
-// Компонент для синхронизации темы оставляем как есть
-const ThemeSynchronizer = () => {
-  const { webApp } = useMiniApp();
+// ВРЕМЕННАЯ ЗАГЛУШКА КАЛЬКУЛЯТОРА
+function CalculatorPlaceholder() {
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Калькулятор проектов</h1>
+      <p>Сначала добьемся успешной сборки!</p>
+    </div>
+  );
+}
+
+// Компонент для синхронизации темы
+function ThemeSynchronizer() {
+  const themeParams = useThemeParams();
 
   React.useEffect(() => {
-    if (webApp && webApp.themeParams) {
-      document.documentElement.style.setProperty('--bg-color', webApp.themeParams.bg_color || '#ffffff');
-      document.documentElement.style.setProperty('--text-color', webApp.themeParams.text_color || '#000000');
-      document.documentElement.style.setProperty('--hint-color', webApp.themeParams.hint_color || '#999999');
-      document.documentElement.style.setProperty('--link-color', webApp.themeParams.link_color || '#007aff');
-      document.documentElement.style.setProperty('--button-color', webApp.themeParams.button_color || '#007aff');
-      document.documentElement.style.setProperty('--button-text-color', webApp.themeParams.button_text_color || '#ffffff');
-    }
-  }, [webApp]);
+    document.documentElement.style.setProperty('--bg-color', themeParams.backgroundColor || '#ffffff');
+    document.documentElement.style.setProperty('--text-color', themeParams.textColor || '#000000');
+    document.documentElement.style.setProperty('--hint-color', themeParams.hintColor || '#999999');
+    document.documentElement.style.setProperty('--link-color', themeParams.linkColor || '#007aff');
+    document.documentElement.style.setProperty('--button-color', themeParams.buttonColor || '#007aff');
+    document.documentElement.style.setProperty('--button-text-color', themeParams.buttonTextColor || '#ffffff');
+  }, [themeParams]);
 
   return null;
-};
+}
 
-// Рендерим приложение
+// Главный компонент, который мы рендерим
+function MainApp() {
+  return (
+    <AppRoot
+      style={{
+        backgroundColor: 'var(--bg-color)',
+        color: 'var(--text-color)',
+      }}
+    >
+      <ThemeSynchronizer />
+      <BackButton />
+      <div className="min-h-screen">
+        {/* Пока используем заглушку */}
+        <CalculatorPlaceholder />
+      </div>
+    </AppRoot>
+  );
+}
+
+// Рендерим все в DOM
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <SDKProvider>
-      <ThemeSynchronizer />
-      <div 
-        className="min-h-screen" 
-        style={{ 
-          backgroundColor: 'var(--bg-color)', 
-          color: 'var(--text-color)' 
-        }}
-      >
-        <App />
-      </div>
-    </SDKProvider>
+    <MainApp />
   </React.StrictMode>,
 );
