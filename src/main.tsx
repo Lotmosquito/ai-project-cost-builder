@@ -2,11 +2,12 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+// ИСПОЛЬЗУЕМ СТАРУЮ БИБЛИОТЕКУ, НО С ПРАВИЛЬНЫМИ КОМПОНЕНТАМИ
 import {
   SDKProvider,
+  useMiniApp,
   BackButton,
-  useThemeParams,
-} from '@tma.js/sdk-react';
+} from '@telegram-apps/sdk-react';
 import './index.css';
 
 // ВРЕМЕННАЯ ЗАГЛУШКА КАЛЬКУЛЯТОРА
@@ -14,25 +15,26 @@ function CalculatorPlaceholder() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Калькулятор проектов</h1>
-      <p>Сначала добьемся успешной сборки!</p>
+      <p>Финальная попытка!</p>
     </div>
   );
 }
 
 // Компонент для синхронизации темы
 function ThemeSynchronizer() {
-  const themeParams = useThemeParams();
+  const { webApp } = useMiniApp();
 
   React.useEffect(() => {
-    document.documentElement.style.setProperty('--bg-color', themeParams.backgroundColor || '#ffffff');
-    document.documentElement.style.setProperty('--text-color', themeParams.textColor || '#000000');
-    // ... и остальные стили
-  }, [themeParams]);
+    if (webApp && webApp.themeParams) {
+      document.documentElement.style.setProperty('--bg-color', webApp.themeParams.bg_color || '#ffffff');
+      document.documentElement.style.setProperty('--text-color', webApp.themeParams.text_color || '#000000');
+    }
+  }, [webApp]);
 
   return null;
 }
 
-// Главный компонент, который мы рендерим
+// Главный компонент
 function MainApp() {
   return (
     <div
@@ -44,19 +46,17 @@ function MainApp() {
     >
       <ThemeSynchronizer />
       <BackButton />
-      <div className="min-h-screen">
-        <CalculatorPlaceholder />
-      </div>
+      <CalculatorPlaceholder />
     </div>
   );
 }
 
-// Рендерим все в DOM, обернув в SDKProvider
+// Рендерим все в DOM
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {/* ИЗМЕНЕНИЕ ЗДЕСЬ: Добавили опции в провайдер */}
-    <SDKProvider acceptCustomStyles debug>
+    <SDKProvider>
       <MainApp />
     </SDKProvider>
   </React.StrictMode>,
 );
+
