@@ -2,10 +2,10 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// ИСПОЛЬЗУЕМ СТАРУЮ БИБЛИОТЕКУ, НО С ПРАВИЛЬНЫМИ КОМПОНЕНТАМИ
+// ИСПОЛЬЗУЕМ СТАРУЮ БИБЛИОТЕКУ И ПРАВИЛЬНЫЙ ХУК useSDK
 import {
   SDKProvider,
-  useMiniApp,
+  useSDK, // <--- ВОТ ОН, НАСТОЯЩИЙ!
   BackButton,
 } from '@telegram-apps/sdk-react';
 import './index.css';
@@ -22,7 +22,8 @@ function CalculatorPlaceholder() {
 
 // Компонент для синхронизации темы
 function ThemeSynchronizer() {
-  const { webApp } = useMiniApp();
+  // ИСПОЛЬЗУЕМ useSDK
+  const { webApp } = useSDK();
 
   React.useEffect(() => {
     if (webApp && webApp.themeParams) {
@@ -59,4 +60,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </SDKProvider>
   </React.StrictMode>,
 );
-
