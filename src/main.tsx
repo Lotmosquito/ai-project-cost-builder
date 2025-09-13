@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-  AppRoot,
+  // УБРАЛИ AppRoot ИЗ ИМПОРТА
   BackButton,
   useThemeParams,
 } from '@tma.js/sdk-react';
@@ -38,7 +38,9 @@ function ThemeSynchronizer() {
 // Главный компонент, который мы рендерим
 function MainApp() {
   return (
-    <AppRoot
+    // УБРАЛИ ОБЕРТКУ AppRoot, используем обычный div
+    <div
+      className="min-h-screen"
       style={{
         backgroundColor: 'var(--bg-color)',
         color: 'var(--text-color)',
@@ -47,10 +49,9 @@ function MainApp() {
       <ThemeSynchronizer />
       <BackButton />
       <div className="min-h-screen">
-        {/* Пока используем заглушку */}
         <CalculatorPlaceholder />
       </div>
-    </AppRoot>
+    </div>
   );
 }
 
