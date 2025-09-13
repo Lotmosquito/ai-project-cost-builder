@@ -3,7 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-  // УБРАЛИ AppRoot ИЗ ИМПОРТА
+  // ВОЗВРАЩАЕМ SDKProvider
+  SDKProvider,
   BackButton,
   useThemeParams,
 } from '@tma.js/sdk-react';
@@ -38,7 +39,6 @@ function ThemeSynchronizer() {
 // Главный компонент, который мы рендерим
 function MainApp() {
   return (
-    // УБРАЛИ ОБЕРТКУ AppRoot, используем обычный div
     <div
       className="min-h-screen"
       style={{
@@ -55,9 +55,11 @@ function MainApp() {
   );
 }
 
-// Рендерим все в DOM
+// Рендерим все в DOM, обернув в SDKProvider
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MainApp />
+    <SDKProvider>
+      <MainApp />
+    </SDKProvider>
   </React.StrictMode>,
 );
