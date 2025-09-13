@@ -1,7 +1,8 @@
-// src/App.jsx
+// src/main.tsx
 
 import { useEffect } from 'react';
-import { SDKProvider, useWebApp, BackButton } from '@telegram-apps/sdk-react';
+// ИЗМЕНЕНИЕ 1: Вместо useWebApp импортируем useMiniApp
+import { SDKProvider, useMiniApp, BackButton } from '@telegram-apps/sdk-react';
 
 // --- Сюда нужно будет вставить твой компонент калькулятора ---
 // --- Lovable.dev скорее всего создал его в отдельном файле ---
@@ -23,10 +24,11 @@ function Calculator() {
  * Компонент, который отвечает за синхронизацию темы Telegram с CSS-переменными
  */
 function ThemeSynchronizer() {
-  const webApp = useWebApp();
+  // ИЗМЕНЕНИЕ 2: Используем useMiniApp и получаем из него webApp
+  const { webApp } = useMiniApp();
 
   useEffect(() => {
-    // Этот код синхронизирует тему оформления Telegram с приложением [cite: 111, 112]
+    // Этот код синхронизирует тему оформления Telegram с приложением
     if (webApp && webApp.themeParams) {
       document.documentElement.style.setProperty('--bg-color', webApp.themeParams.bg_color || '#ffffff');
       document.documentElement.style.setProperty('--text-color', webApp.themeParams.text_color || '#000000');
@@ -48,13 +50,13 @@ function App() {
   return (
     <SDKProvider>
       <ThemeSynchronizer />
-      {/* Этот компонент добавит нативную кнопку "Назад" в интерфейс Telegram [cite: 113] */}
+      {/* Этот компонент добавит нативную кнопку "Назад" в интерфейс Telegram */}
       <BackButton />
-      <div 
-        className="min-h-screen" 
-        style={{ 
-          backgroundColor: 'var(--bg-color)', 
-          color: 'var(--text-color)' 
+      <div
+        className="min-h-screen"
+        style={{
+          backgroundColor: 'var(--bg-color)',
+          color: 'var(--text-color)'
         }}
       >
         <Calculator />
