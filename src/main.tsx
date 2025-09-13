@@ -1,16 +1,16 @@
-import { useEffect } from 'react';
+// src/main.tsx
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { SDKProvider, useMiniApp, BackButton } from '@telegram-apps/sdk-react';
+import App from './App'; // <--- Вот самая главная строка!
+import './index.css'; // Убедись, что файл со стилями тоже подключен
 
-// Импортируем твой настоящий компонент калькулятора из правильного файла
-import ProjectCalculator from './components/ProjectCalculator';
-
-/**
- * Компонент, который отвечает за синхронизацию темы Telegram с CSS-переменными
- */
-function ThemeSynchronizer() {
+// Компонент для синхронизации темы оставляем как есть
+const ThemeSynchronizer = () => {
   const { webApp } = useMiniApp();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (webApp && webApp.themeParams) {
       document.documentElement.style.setProperty('--bg-color', webApp.themeParams.bg_color || '#ffffff');
       document.documentElement.style.setProperty('--text-color', webApp.themeParams.text_color || '#000000');
@@ -22,16 +22,13 @@ function ThemeSynchronizer() {
   }, [webApp]);
 
   return null;
-}
+};
 
-/**
- * Основной компонент приложения
- */
-function App() {
-  return (
+// Рендерим приложение
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <SDKProvider>
       <ThemeSynchronizer />
-      <BackButton />
       <div 
         className="min-h-screen" 
         style={{ 
@@ -39,11 +36,8 @@ function App() {
           color: 'var(--text-color)' 
         }}
       >
-        {/* Используем настоящий компонент калькулятора */}
-        <ProjectCalculator />
+        <App />
       </div>
     </SDKProvider>
-  );
-}
-
-export default App;
+  </React.StrictMode>,
+);
