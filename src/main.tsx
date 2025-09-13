@@ -3,7 +3,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-  // ВОЗВРАЩАЕМ SDKProvider
   SDKProvider,
   BackButton,
   useThemeParams,
@@ -27,10 +26,7 @@ function ThemeSynchronizer() {
   React.useEffect(() => {
     document.documentElement.style.setProperty('--bg-color', themeParams.backgroundColor || '#ffffff');
     document.documentElement.style.setProperty('--text-color', themeParams.textColor || '#000000');
-    document.documentElement.style.setProperty('--hint-color', themeParams.hintColor || '#999999');
-    document.documentElement.style.setProperty('--link-color', themeParams.linkColor || '#007aff');
-    document.documentElement.style.setProperty('--button-color', themeParams.buttonColor || '#007aff');
-    document.documentElement.style.setProperty('--button-text-color', themeParams.buttonTextColor || '#ffffff');
+    // ... и остальные стили
   }, [themeParams]);
 
   return null;
@@ -58,7 +54,8 @@ function MainApp() {
 // Рендерим все в DOM, обернув в SDKProvider
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <SDKProvider>
+    {/* ИЗМЕНЕНИЕ ЗДЕСЬ: Добавили опции в провайдер */}
+    <SDKProvider acceptCustomStyles debug>
       <MainApp />
     </SDKProvider>
   </React.StrictMode>,
