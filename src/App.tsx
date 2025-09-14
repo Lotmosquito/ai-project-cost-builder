@@ -1,46 +1,27 @@
-import { useEffect } from 'react';
-import WebApp from '@twa-dev/sdk';
-// Возможно, понадобится вернуть твой файл со стилями, если он называется иначе
-import './App.css'; 
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
 
-// Здесь должен быть код твоего НАСТОЯЩЕГО калькулятора,
-// который сгенерировал Lovable. Пока оставим пример для проверки.
-function App() {
-  useEffect(() => {
-    WebApp.ready();
-    WebApp.expand();
-    
-    // Настройка BackButton
-    WebApp.BackButton.show();
-    WebApp.BackButton.onClick(() => WebApp.close());
+const queryClient = new QueryClient();
 
-    // Слушатель изменения темы
-    const handleThemeChanged = () => {
-      document.documentElement.style.setProperty('--tg-bg-color', WebApp.themeParams.bg_color || '#ffffff');
-      document.documentElement.style.setProperty('--tg-text-color', WebApp.themeParams.text_color || '#000000');
-    };
-    
-    WebApp.onEvent('themeChanged', handleThemeChanged);
-    
-    // Инициализация темы при первой загрузке
-    handleThemeChanged();
-
-    // Очистка
-    return () => {
-      WebApp.offEvent('themeChanged', handleThemeChanged);
-      WebApp.BackButton.hide();
-    };
-  }, []);
-
-  return (
-    <div className="app" style={{ 
-      backgroundColor: 'var(--tg-bg-color)',
-      color: 'var(--tg-text-color)'
-    }}>
-      <h1>Тестовое приложение</h1>
-      <p>Если ты это видишь, значит всё работает!</p>
-    </div>
-  );
-}
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
