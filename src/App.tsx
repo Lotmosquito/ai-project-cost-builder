@@ -2,29 +2,46 @@
 
 import { useState } from 'react';
 import { PlanetSelector } from './components/PlanetSelector';
-import { QuoteBuilder } from './components/QuoteBuilder'; // <-- Импортируем новый компонент
+import { QuoteBuilder } from './components/QuoteBuilder';
+import { ServiceCatalog } from './components/ServiceCatalog';
+import { Service } from './mockData';
 
 type Step = 'planet_selection' | 'quote_builder';
-type Planet = 'earth' | 'mars'; // <-- Убрали null, так как планета всегда будет выбрана
+type Planet = 'earth' | 'mars';
 
 function App() {
   const [step, setStep] = useState<Step>('planet_selection');
-  // Задаем начальное значение, чтобы TypeScript был спокоен
-  const [planet, setPlanet] = useState<Planet>('earth'); 
+  const [planet, setPlanet] = useState<Planet>('earth');
+  const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+  const [quoteItems, setQuoteItems] = useState<Service[]>([]);
 
   const handlePlanetSelect = (selectedPlanet: Planet) => {
     setPlanet(selectedPlanet);
     setStep('quote_builder');
-    console.log(`Выбрана планета: ${selectedPlanet}, переходим к Мастерской сметы.`);
+  };
+
+  const handleAddServiceToQuote = (service: Service) => {
+    setQuoteItems(prevItems => [...prevItems, service]);
+    setIsCatalogOpen(false); // Закрываем каталог после выбора
   };
 
   return (
     <div>
-      {/* Показываем экран выбора, если это первый шаг */}
       {step === 'planet_selection' && <PlanetSelector onSelect={handlePlanetSelect} />}
       
-      {/* Показываем Мастерскую, если это второй шаг */}
-      {step === 'quote_builder' && <QuoteBuilder planet={planet} />}
+      {step === 'quote_builder' && (
+        <QuoteBuilder 
+          planet={planet} 
+          quoteItems={quoteItems}
+          onAddServiceClick={() => setIsCatalogOpen(true)} // Открываем каталог по клику
+        />
+      )}
+
+      <ServiceCatalog 
+        isOpen={isCatalogOpen}
+        onClose={() => setIsCatalogOpen(false)}
+        onSelectService={handleAddServiceToQuote}
+      />
     </div>
   );
 }
