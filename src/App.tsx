@@ -1,27 +1,39 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+// src/App.tsx
 
-const queryClient = new QueryClient();
+import { useState } from 'react';
+import { PlanetSelector } from './components/PlanetSelector';
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+// Типы для нашего состояния
+type Step = 'planet_selection' | 'quote_builder';
+type Planet = 'earth' | 'mars' | null;
+
+function App() {
+  // Состояние, которое хранит текущий шаг и выбранную планету
+  const [step, setStep] = useState<Step>('planet_selection');
+  const [planet, setPlanet] = useState<Planet>(null);
+
+  // Функция, которая будет переключать нас на следующий шаг
+  const handlePlanetSelect = (selectedPlanet: Planet) => {
+    setPlanet(selectedPlanet);
+    setStep('quote_builder');
+    // В будущем здесь будет открываться "Мастерская сметы"
+    console.log(`Выбрана планета: ${selectedPlanet}, переходим к следующему шагу.`);
+  };
+
+  return (
+    <div>
+      {/* Показываем экран выбора планеты, если это текущий шаг */}
+      {step === 'planet_selection' && <PlanetSelector onSelect={handlePlanetSelect} />}
+      
+      {/* В будущем здесь будет отображаться сама мастерская */}
+      {step === 'quote_builder' && (
+        <div className="p-4">
+          <h1>Мастерская сметы (в разработке)</h1>
+          <p>Вы выбрали проект типа: {planet}</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default App;
