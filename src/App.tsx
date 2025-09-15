@@ -2,36 +2,29 @@
 
 import { useState } from 'react';
 import { PlanetSelector } from './components/PlanetSelector';
+import { QuoteBuilder } from './components/QuoteBuilder'; // <-- Импортируем новый компонент
 
-// Типы для нашего состояния
 type Step = 'planet_selection' | 'quote_builder';
-type Planet = 'earth' | 'mars' | null;
+type Planet = 'earth' | 'mars'; // <-- Убрали null, так как планета всегда будет выбрана
 
 function App() {
-  // Состояние, которое хранит текущий шаг и выбранную планету
   const [step, setStep] = useState<Step>('planet_selection');
-  const [planet, setPlanet] = useState<Planet>(null);
+  // Задаем начальное значение, чтобы TypeScript был спокоен
+  const [planet, setPlanet] = useState<Planet>('earth'); 
 
-  // Функция, которая будет переключать нас на следующий шаг
   const handlePlanetSelect = (selectedPlanet: Planet) => {
     setPlanet(selectedPlanet);
     setStep('quote_builder');
-    // В будущем здесь будет открываться "Мастерская сметы"
-    console.log(`Выбрана планета: ${selectedPlanet}, переходим к следующему шагу.`);
+    console.log(`Выбрана планета: ${selectedPlanet}, переходим к Мастерской сметы.`);
   };
 
   return (
     <div>
-      {/* Показываем экран выбора планеты, если это текущий шаг */}
+      {/* Показываем экран выбора, если это первый шаг */}
       {step === 'planet_selection' && <PlanetSelector onSelect={handlePlanetSelect} />}
       
-      {/* В будущем здесь будет отображаться сама мастерская */}
-      {step === 'quote_builder' && (
-        <div className="p-4">
-          <h1>Мастерская сметы (в разработке)</h1>
-          <p>Вы выбрали проект типа: {planet}</p>
-        </div>
-      )}
+      {/* Показываем Мастерскую, если это второй шаг */}
+      {step === 'quote_builder' && <QuoteBuilder planet={planet} />}
     </div>
   );
 }
