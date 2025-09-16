@@ -40,7 +40,7 @@ export function ServiceCatalog({ isOpen, onClose, onSelectService, services }: S
                                     <div key={service.id} onClick={() => onSelectService(service)}
                                         className="p-3 border rounded-lg cursor-pointer hover:shadow-md" style={{ borderColor: 'var(--hint-color)' }}>
                                         {/* ВАЖНО: Убедись, что в Airtable колонки называются 'Name' и 'Description' */}
-                                        <p className="font-semibold">{service.Name}</p>
+                                        <p className="font-semibold" style={{ color: 'var(--text-color)' }}>{service.Name}</p>
                                         <p className="text-sm" style={{ color: 'var(--hint-color)' }}>{service.Description}</p>
                                     </div>
                                 ))}
