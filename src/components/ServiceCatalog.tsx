@@ -19,7 +19,7 @@ export function ServiceCatalog({ isOpen, onClose, onSelectService }: ServiceCata
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out"
+      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out">
         <div className="p-4 h-full flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Каталог услуг</h2>
