@@ -18,7 +18,7 @@ export function ServiceCatalog({ isOpen, onClose, onSelectService, services }: S
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-        <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 transform ..."
+        <div className="service-catalog-panel fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 transform ..."
             style={{ backgroundColor: 'var(--bg-color)', color: 'var(--text-color)', transform: isOpen ? 'translateX(0)' : 'translateX(100%)' }}>
             <div className="p-4 h-full flex flex-col">
                 <div className="flex justify-between items-center mb-4">

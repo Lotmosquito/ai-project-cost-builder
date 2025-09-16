@@ -146,3 +146,7 @@
     @apply bg-popover/95 backdrop-blur text-popover-foreground border border-border/50 rounded-md shadow-lg;
   }
 }
+/* --- НАШЕ ЯДЕРНОЕ ПРАВИЛО ДЛЯ ПАНЕЛИ КАТАЛОГА --- */
+.service-catalog-panel {
+    background-color: var(--bg-color) !important;
+}
