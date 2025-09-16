@@ -1,6 +1,6 @@
 // src/components/QuoteBuilder.tsx
-
-import { Service } from '../mockData';
+// ИЗМЕНЕНИЕ: Импортируем из airtable.ts
+import { Service } from '../services/airtable';
 
 type QuoteBuilderProps = {
   planet: 'earth' | 'mars';
@@ -13,7 +13,8 @@ export function QuoteBuilder({ planet, quoteItems, onAddServiceClick }: QuoteBui
   const planetName = planet === 'earth' ? 'Проект "Земля"' : 'Проект "Марс"';
 
   const totalCost = quoteItems.reduce((sum, item) => {
-    return sum + (planet === 'earth' ? item.priceEarth : item.priceMars);
+    // ИЗМЕНЕНИЕ: Используем новые имена полей из Airtable
+    return sum + (planet === 'earth' ? item.Price_Earth : item.Price_Mars);
   }, 0);
 
   return (
@@ -22,7 +23,6 @@ export function QuoteBuilder({ planet, quoteItems, onAddServiceClick }: QuoteBui
         <h1 className="text-2xl font-bold">{planetEmoji} {planetName}</h1>
         <p className="text-sm" style={{ color: 'var(--hint-color)' }}>Ваша смета</p>
       </div>
-
       <div className="flex-grow">
         {quoteItems.length === 0 ? (
           <div className="h-full flex items-center justify-center text-center">
@@ -36,14 +36,14 @@ export function QuoteBuilder({ planet, quoteItems, onAddServiceClick }: QuoteBui
           <div className="space-y-2">
             {quoteItems.map((item, index) => (
               <div key={index} className="p-3 border rounded-lg flex justify-between items-center" style={{ borderColor: 'var(--hint-color)'}}>
-                <span>{item.name}</span>
-                <span className="font-bold">${planet === 'earth' ? item.priceEarth : item.priceMars}</span>
+                {/* ИЗМЕНЕНИЕ: Используем новые имена полей */}
+                <span>{item.Name}</span>
+                <span className="font-bold">${planet === 'earth' ? item.Price_Earth : item.Price_Mars}</span>
               </div>
             ))}
           </div>
         )}
       </div>
-      
       <div className="mt-6 pt-4 border-t" style={{ borderColor: 'var(--hint-color)' }}>
         <div className="flex justify-between items-center mb-4">
           <span className="text-lg font-medium" style={{ color: 'var(--hint-color)' }}>Итог:</span>

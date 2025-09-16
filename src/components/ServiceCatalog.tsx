@@ -1,25 +1,27 @@
 // src/components/ServiceCatalog.tsx
-
-import { services, Service } from '../mockData';
+// ИЗМЕНЕНИЕ: Импортируем из airtable.ts
+import { Service } from '../services/airtable';
 
 type ServiceCatalogProps = {
   isOpen: boolean;
   onClose: () => void;
   onSelectService: (service: Service) => void;
+  // ДОБАВЛЕНО: Получаем услуги извне
+  services: Service[];
 };
 
-export function ServiceCatalog({ isOpen, onClose, onSelectService }: ServiceCatalogProps) {
+export function ServiceCatalog({ isOpen, onClose, onSelectService, services }: ServiceCatalogProps) {
   if (!isOpen) return null;
 
-  // Группируем услуги по категориям для удобного отображения
   const groupedServices = services.reduce((acc, service) => {
-    (acc[service.category] = acc[service.category] || []).push(service);
+    // ИЗМЕНЕНИЕ: Используем новое имя поля
+    (acc[service.Category] = acc[service.Category] || []).push(service);
     return acc;
   }, {} as Record<string, Service[]>);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
-      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ease-in-out">
+      <div className="fixed top-0 right-0 h-full w-full max-w-md shadow-xl z-50 transform transition-transform duration-300 ease-in-out" style={{ backgroundColor: 'var(--bg-color)', transform: isOpen ? 'translateX(0)' : 'translateX(100%)' }}>
         <div className="p-4 h-full flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Каталог услуг</h2>
@@ -33,8 +35,9 @@ export function ServiceCatalog({ isOpen, onClose, onSelectService }: ServiceCata
                   {servicesInCategory.map(service => (
                     <div key={service.id} onClick={() => onSelectService(service)} 
                          className="p-3 border rounded-lg cursor-pointer hover:shadow-md" style={{ borderColor: 'var(--hint-color)'}}>
-                      <p className="font-semibold">{service.name}</p>
-                      <p className="text-sm" style={{ color: 'var(--hint-color)' }}>{service.description}</p>
+                      {/* ИЗМЕНЕНИЕ: Используем новые имена полей */}
+                      <p className="font-semibold">{service.Name}</p>
+                      <p className="text-sm" style={{ color: 'var(--hint-color)' }}>{service.Description}</p>
                     </div>
                   ))}
                 </div>
