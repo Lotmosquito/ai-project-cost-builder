@@ -4,6 +4,7 @@ import { PlanetSelector } from './components/PlanetSelector';
 import { QuoteBuilder } from './components/QuoteBuilder';
 import { ServiceCatalog } from './components/ServiceCatalog';
 import { Service, fetchServices } from './services/airtable';
+import WebApp from '@twa-dev/sdk';
 
 type Step = 'planet_selection' | 'quote_builder';
 type Planet = 'earth' | 'mars';
@@ -18,17 +19,29 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadServices = async () => {
+    const initializeApp = async () => {
       try {
+        // 1. Ждем, пока Telegram SDK будет полностью готов
+        WebApp.ready();
+
+        // 2. Устанавливаем цвета темы
+        const themeParams = WebApp.themeParams;
+        document.body.style.backgroundColor = themeParams.bg_color || '#ffffff';
+        document.body.style.color = themeParams.text_color || '#000000';
+
+        // 3. Только теперь загружаем данные из Airtable
         const servicesFromAirtable = await fetchServices();
         setAllServices(servicesFromAirtable);
+
       } catch (err) {
         setError('Не удалось загрузить каталог услуг.');
+        console.error(err);
       } finally {
         setIsLoading(false);
       }
     };
-    loadServices();
+
+    initializeApp();
   }, []);
 
   const handlePlanetSelect = (selectedPlanet: Planet) => {
@@ -41,8 +54,9 @@ function App() {
     setIsCatalogOpen(false);
   };
 
+  // Убираем div-обертку, так как стили применяются к body
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Загрузка каталога...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Загрузка...</div>;
   }
   
   if (error) {
@@ -50,7 +64,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen">
+    <>
       {step === 'planet_selection' && <PlanetSelector onSelect={handlePlanetSelect} />}
       {step === 'quote_builder' && (
         <QuoteBuilder 
@@ -65,7 +79,7 @@ function App() {
         onSelectService={handleAddServiceToQuote}
         services={allServices} 
       />
-    </div>
+    </>
   );
 }
 
